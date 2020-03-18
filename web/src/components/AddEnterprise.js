@@ -26,7 +26,8 @@ export default class AddEnterprise extends Component {
 
   onSubmit = async evt => {
     evt.preventDefault();
-    await Axios.post("http://localhost:9001/save", {
+    await Axios.post("http://localhost:9001/api/v1/enterprises/save", {
+      //URL Guardar
       enterprise: this.state
     });
     console.log(this.state);

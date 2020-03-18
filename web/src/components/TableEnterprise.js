@@ -1,11 +1,26 @@
 import React, { Component } from "react";
+import axios from "axios";
 
-class TableEnterprise extends Component {
+import { Link } from "react-router-dom";
+
+export default class TableEnterprise extends Component {
   constructor() {
     super();
-    this.setState({
+    this.state = {
       enterprises: []
-    });
+    };
+  }
+
+  componentDidMount() {
+    axios
+      .get("http://localhost:9001/api/v1/enterprises") //URL https://jsonplaceholder.typicode.com/posts
+      .then(response => {
+        console.log(response);
+        this.setState({ enterprises: response.data });
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   render() {
@@ -13,18 +28,36 @@ class TableEnterprise extends Component {
       <div>
         <div className="container">
           <table width="50%" align="center">
-            <tr>
+            <thead>
+              <tr>
+                <th>EMPRESA</th>
+                <th>VER PÁGINA</th>
+              </tr>
+            </thead>
+            <tbody>
               {this.state.enterprises.map(enterprise => (
-                <td width="50%" key={enterprise.id}>
-                  {enterprise.designation}
-                </td>
+                <tr>
+                  <td width="50%" key={enterprise.id}>
+                    {enterprise.designation}
+                  </td>
+                  <td>
+                    <Link
+                      to={{
+                        pathname: "/home/",
+                        state: {
+                          id: enterprise.id
+                        }
+                      }}
+                    >
+                      Web
+                    </Link>
+                  </td>
+                </tr>
               ))}
-            </tr>
+            </tbody>
           </table>
         </div>
       </div>
     );
   }
 }
-
-export default TableEnterprise;
